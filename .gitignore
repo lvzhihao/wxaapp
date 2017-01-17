@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+*.swa
+*.swp
+*.swo
