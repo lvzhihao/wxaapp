@@ -34,7 +34,9 @@ var apiCmd = &cobra.Command{
 	Use:   "api",
 	Short: "开放接口",
 	Long: `GET /api/openid 
+GET /api/sessionid
 GET /api/session
+PUT /api/session
 GET /api/access_token`,
 	Run: func(cmd *cobra.Command, args []string) {
 		app := iris.New()
@@ -48,6 +50,8 @@ GET /api/access_token`,
 		app.Use(recovery.Handler)
 
 		app.Get("/api/openid", api.GetOpenId)
+		app.Get("/api/sessionid", api.GetSessionId)
+		app.Get("/api/session", api.GetSession)
 		app.Listen(viper.GetString("api_host") + ":" + viper.GetString("api_port"))
 	},
 }

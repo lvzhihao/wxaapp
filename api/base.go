@@ -18,6 +18,8 @@ var logger = zap.New(
 
 //为nil时则表示为系统内部错误，小程序前端获取接口errMsg为null则提示自定义错误，同示可显示logId，方便调试
 var errMsgMap = map[int64]interface{}{
+	400001: "无效sessionid",
+
 	500001: nil, //code为空
 	500002: nil,
 	500003: nil,
