@@ -27,4 +27,4 @@ _testmain.go
 *.swp
 *.swo
 
-.wxaapp.yaml
+*.wxaapp.yaml
