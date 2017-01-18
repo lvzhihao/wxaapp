@@ -1,0 +1,6 @@
+api_host: 0.0.0.0
+api_port: 8574
+
+#微信小程序开发配置
+app_id: wxapp_id
+app_secret: wxapp_secret
