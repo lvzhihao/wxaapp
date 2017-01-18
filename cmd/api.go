@@ -24,6 +24,7 @@ import (
 	"github.com/iris-contrib/middleware/loggerzap"
 	"github.com/iris-contrib/middleware/recovery"
 	"github.com/kataras/iris"
+	"github.com/lvzhihao/wxaapp/api"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -46,7 +47,7 @@ GET /api/access_token`,
 		}))
 		app.Use(recovery.Handler)
 
-		app.Get("/api/openid", getOpenId)
+		app.Get("/api/openid", api.GetOpenId)
 		app.Listen(viper.GetString("api_host") + ":" + viper.GetString("api_port"))
 	},
 }
@@ -64,8 +65,4 @@ func init() {
 	// is called directly, e.g.:
 	// apiCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-}
-
-func getOpenId(ctx *iris.Context) {
-	ctx.HTML(200, "xx")
 }
