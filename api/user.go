@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"sync"
@@ -112,9 +113,10 @@ func getWxSession(code string) (Jscode2Session, int64, error) {
 	if err != nil {
 		return ret, 500003, err
 	}
+	logger.Debug("jscode2session raw body:", zap.String("body", string(info)))
 	err = json.Unmarshal(info, &ret)
-	if err != nil {
-		return ret, 500004, err
+	if err != nil || ret.Openid == "" {
+		return ret, 500004, fmt.Errorf(string(info))
 	}
 	logger.Debug("jscode2session result:", zap.String("code", code), zap.Object("return", ret))
 	return ret, 0, nil
@@ -124,6 +126,7 @@ func getWxSession(code string) (Jscode2Session, int64, error) {
 func getSession(code string) (Session, int64, error) {
 	var sess Session
 	res, errCode, err := getWxSession(code)
+	log.Println(res, errCode, err)
 	if err != nil {
 		return sess, errCode, err
 	}
