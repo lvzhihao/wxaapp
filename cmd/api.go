@@ -21,6 +21,9 @@
 package cmd
 
 import (
+	"time"
+
+	"github.com/iris-contrib/graceful"
 	"github.com/iris-contrib/middleware/loggerzap"
 	"github.com/iris-contrib/middleware/recovery"
 	"github.com/kataras/iris"
@@ -37,9 +40,11 @@ var apiCmd = &cobra.Command{
 GET /api/sessionid
 GET /api/session
 PUT /api/session
-GET /api/access_token`,
+GET /api/userinfo
+PUT /api/userinfo`,
 	Run: func(cmd *cobra.Command, args []string) {
 		app := iris.New()
+
 		//global recovery
 		app.Use(loggerzap.New(loggerzap.Config{
 			Status: true,
@@ -49,10 +54,18 @@ GET /api/access_token`,
 		}))
 		app.Use(recovery.Handler)
 
+		//method sign
+		//app.Post("/router?method={method}", api.Router)
+
+		//rest，no sign,
 		app.Get("/api/openid", api.GetOpenId)
 		app.Get("/api/sessionid", api.GetSessionId)
 		app.Get("/api/session", api.GetSession)
-		app.Listen(viper.GetString("api_host") + ":" + viper.GetString("api_port"))
+		app.Put("/api/session", api.PutSession)
+		app.Get("/api/userinfo", api.GetUserInfo)
+		app.Put("/api/userinfo", api.PutUserInfo)
+
+		graceful.Run(viper.GetString("api_host")+":"+viper.GetString("api_port"), time.Duration(10)*time.Second, app)
 	},
 }
 
